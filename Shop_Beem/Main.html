@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ร้านค้าออนไลน์ (มือถือ)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f9f9;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 1rem;
+            text-align: center;
+        }
+        nav {
+            display: flex;
+            justify-content: space-around;
+            background-color: #f1f1f1;
+            padding: 0.5rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        nav a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 0.9rem;
+        }
+        .container {
+            padding: 1rem;
+        }
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: white;
+            margin-bottom: 1rem;
+            padding: 1rem;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .product img {
+            max-width: 100%;
+            border-radius: 5px;
+        }
+        .product h3 {
+            font-size: 1rem;
+            margin: 0.5rem 0;
+        }
+        .product p {
+            color: #333;
+            font-size: 0.9rem;
+        }
+        .product button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 0.5rem;
+            border-radius: 5px;
+            width: 100%;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 0.5rem;
+        }
+        .product button:hover {
+            background-color: #0056b3;
+        }
+        footer {
+            text-align: center;
+            padding: 1rem;
+            background-color: #007bff;
+            color: white;
+            margin-top: 2rem;
+        }
+        #cart-items {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        #cart-items h3 {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+        #cart-items ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        #cart-items li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+        #cart-items li button {
+            padding: 0.3rem;
+            font-size: 0.8rem;
+            cursor: pointer;
+        }
+        #checkout {
+            margin-top: 1rem;
+            text-align: center;
+        }
+        #checkout a {
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+        #checkout a:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ร้านค้าออนไลน์</h1>
+    </header>
+    <nav>
+        <a href="#products">สินค้า</a>
+        <a href="#cart">ตะกร้า</a>
+        <a href="#contact">ติดต่อเรา</a>
+    </nav>
+    <div class="container" id="products">
+        <div class="product">
+            <img src="images/donut.png" alt="สินค้า 1">
+            <h3>นูเทลล่า ช็อค</h3>
+            <p>ราคา: 20 บาท</p>
+            <button onclick="addToCart('นูเทลล่า ช็อค', 100)">เพิ่มในตะกร้า</button>
+        </div>
+        <div class="product">
+            <img src="images/difu.png" alt="สินค้า 2">
+            <h3>ไดฟูกุ ชาเขียว</h3>
+            <p>ราคา: 20 บาท</p>
+            <button onclick="addToCart('ไดฟูกุ ชาเขียว', 200)">เพิ่มในตะกร้า</button>
+        </div>
+        <div class="product">
+            <img src="images/soap.png" alt="สินค้า 3">
+            <h3>โลชั่นทาตัว</h3>
+            <p>ราคา: 300 บาท</p>
+            <button onclick="addToCart('โลชั่นทาตัว', 300)">เพิ่มในตะกร้า</button>
+        </div>
+    </div>
+    <div class="container" id="cart">
+        <div id="cart-items">
+            <h3>ตะกร้าสินค้า</h3>
+            <ul id="cart-list"></ul>
+            <p id="total-price">ราคารวม: 0 บาท</p>
+            <div id="checkout">
+                <a href="checkout.html">ชำระเงิน</a>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>&copy; 2024 ร้านค้าออนไลน์</p>
+    </footer>
+    <script>
+        const cart = [];
+        function addToCart(productName, productPrice) {
+            const existingItem = cart.find(item => item.name === productName);
+            if (existingItem) {
+                existingItem.quantity++;
+            } else {
+                cart.push({ name: productName, price: productPrice, quantity: 1 });
+            }
+            updateCart();
+        }
+        function removeFromCart(productName) {
+            const index = cart.findIndex(item => item.name === productName);
+            if (index !== -1) {
+                cart.splice(index, 1);
+            }
+            updateCart();
+        }
+        function changeQuantity(productName, delta) {
+            const item = cart.find(item => item.name === productName);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    removeFromCart(productName);
+                }
+            }
+            updateCart();
+        }
+        function updateCart() {
+            const cartList = document.getElementById('cart-list');
+            const totalPriceEl = document.getElementById('total-price');
+            cartList.innerHTML = ''; // ล้างรายการเก่า
+            let totalPrice = 0;
+            cart.forEach(item => {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    ${item.name} - ${item.price} บาท x ${item.quantity}
+                    <div>
+                        <button onclick="changeQuantity('${item.name}', -1)">-</button>
+                        <button onclick="changeQuantity('${item.name}', 1)">+</button>
+                        <button onclick="removeFromCart('${item.name}')">ลบ</button>
+                    </div>
+                `;
+                cartList.appendChild(li);
+                totalPrice += item.price * item.quantity;
+            });
+            totalPriceEl.textContent = `ราคารวม: ${totalPrice} บาท`;
+        }
+    </script>
+</body>
+</html>
