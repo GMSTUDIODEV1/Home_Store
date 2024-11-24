@@ -1,0 +1,24 @@
+/* สไตล์ป็อปอัพ */
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    text-align: center;
+    font-size: 18px;
+    display: none; /* ซ่อนโดยเริ่มต้น */
+}
+
+.popup.show {
+    display: block;
+}
+
+.popup.hidden {
+    display: none;
+}
